@@ -7,7 +7,7 @@
     local-name: ypspur_ros
     version: master
 - git:
-    uri: https://github.com/Ryusei-Baba/orne-box2
+    uri: https://github.com/Ryusei-Baba/orne-box
     local-name: orne-box
     version: TC_2023
 - git:
