@@ -2,14 +2,14 @@
 <launch>
   <arg name="joy_dev" default="/dev/input/js0"/>
   <arg name="joy_config" default="joy"/>
-  <arg name="cmd_vel" default="joy_vel"/>
+  <arg name="cmd_vel" default="cmd_vel"/>
   <arg name="teleop_config" default="$(find orne_box_bringup)/config/teleop_joy.yaml" /> 
   <node pkg="joy" type="joy_node" name="joy_node">
     <param name="dev" value="$(arg joy_dev)"/>
     <param name="autorepeat_rate" value="20"/>
   </node>
   <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
-    <rosparam command="load" file="$(find orne_box_bringup)/config/joy_simple_RobotGuidance.yaml"/>
+    <rosparam command="load" file="$(find orne_box_bringup)/config/$(arg joy_config).yaml"/>
     <remap from="cmd_vel" to="$(arg cmd_vel)"/>
   </node>
   <rosparam file="$(arg teleop_config)" command="load" />                 
