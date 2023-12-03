@@ -6,7 +6,8 @@
   <arg name="use_eth_urg"         default="false"/>
   <!--arg name="urg_ip"              default="192.168.0.10" if="$(arg use_eth_urg)"/-->
   <arg name="urg_ip"              default="192.168.1.102" if="$(arg use_eth_urg)"/>
-  <arg name="scan_dev"            default="/dev/sensors/hokuyo_H0803606" unless="$(arg use_eth_urg)"/>
+  <!-- <arg name="scan_dev"            default="/dev/sensors/hokuyo_H0803606" unless="$(arg use_eth_urg)"/> -->
+  <arg name="scan_dev"            default="/dev/sensors/hokuyo_H1843757" unless="$(arg use_eth_urg)"/>
 
   <node pkg="urg_node" type="urg_node" name="urg_node">
     <remap from="scan" to="$(arg scan_topic)"/>
@@ -21,4 +22,8 @@
     <param name="angle_min" value="-1.5708"/>
     <param name="angle_max" value="1.5708"/>
   </node>
+
+<!-- laser_filters -->
+  <include file="$(find laser_filters)/simple_RobotGuidance/range_filter.launch">
+  </include>
 </launch>
