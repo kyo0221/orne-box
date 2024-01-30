@@ -7,9 +7,9 @@
     local-name: ypspur_ros
     version: master
 - git:
-    uri: https://github.com/Ryusei-Baba/orne-box
+    uri: https://github.com/open-rdc/orne-box
     local-name: orne-box
-    version: TC_2023
+    version: TC_2021
 - git:
     uri: https://github.com/ros-planning/navigation
     local-name: navigation
@@ -27,7 +27,7 @@
     local-name: robot_localization
     version: noetic-devel
 - git:
-    uri: https://github.com/masakifujiwara1/waypoint_manager
+    uri: https://github.com/NaokiTakahashi12/waypoint_manager
     local-name: waypoint_manager
     version: main
 - git:
@@ -49,8 +49,4 @@
 - git:
     uri: https://github.com/ANYbotics/message_logger.git
     local-name: message_logger
-    version: master
-- git:
-    uri: https://github.com/masakifujiwara1/obstacle_detector.git
-    local-name: obstacle_detector
     version: master
