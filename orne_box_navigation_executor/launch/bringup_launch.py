@@ -19,9 +19,9 @@ def generate_launch_description():
     config_dir = os.path.join(bringup_dir, 'config')
     launch_dir = os.path.join(bringup_dir, 'launch')
 
-    emcl2_dir = get_package_share_directory('emcl2')
-    emcl2_launch_dir = os.path.join(emcl2_dir, 'launch')
-    emcl2_params_file = LaunchConfiguration('emcl2_params_file')
+    #emcl2_dir = get_package_share_directory('emcl2')
+    #emcl2_launch_dir = os.path.join(emcl2_dir, 'launch')
+    #emcl2_params_file = LaunchConfiguration('emcl2_params_file')
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration('namespace')
