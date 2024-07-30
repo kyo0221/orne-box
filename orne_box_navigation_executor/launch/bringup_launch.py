@@ -23,6 +23,10 @@ def generate_launch_description():
     emcl2_launch_dir = os.path.join(emcl2_dir, 'launch')
     emcl2_params_file = LaunchConfiguration('emcl2_params_file')
 
+    pcl_dir = get_package_share_directory('pcl_localization_ros2')
+    pcl_launch_dir = os.path.join(pcl_dir, 'launch')
+    pcl_params_file = LaunchConfiguration('pcl_params_file')
+
     # Create the launch configuration variables
     namespace = LaunchConfiguration('namespace')
     use_namespace = LaunchConfiguration('use_namespace')
@@ -89,6 +93,11 @@ def generate_launch_description():
         default_value=os.path.join(config_dir, 'params', 'emcl2_params.yaml'),
         description='Full path to the EMCL2 parameters file to use for all launched nodes')
 
+    declare_params_file_cmd = DeclareLaunchArgument(
+        'pcl_params_file',
+        default_value=os.path.join(config_dir, 'param', 'localization.yaml'),
+        description='Full path to the pcl localization parameters file to use for all launched nodes')
+
     declare_autostart_cmd = DeclareLaunchArgument(
         'autostart', default_value='true',
         description='Automatically startup the nav2 stack')
@@ -132,19 +141,19 @@ def generate_launch_description():
                               'autostart': autostart,
                               'params_file': params_file}.items()),
         #use amcl
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(launch_dir,
-                                                       'localization_launch.py')),
-            condition=IfCondition(PythonExpression(['not ', slam])),
-            launch_arguments={'namespace': namespace,
-                              'map': map_yaml_file,
-                              'use_sim_time': use_sim_time,
-                              'autostart': autostart,
-                              'params_file': params_file,
-                              'use_composition': use_composition,
-                              'use_respawn': use_respawn,
-                              'container_name': 'nav2_container'}.items()
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource(os.path.join(launch_dir,
+        #                                                'localization_launch.py')),
+        #     condition=IfCondition(PythonExpression(['not ', slam])),
+        #     launch_arguments={'namespace': namespace,
+        #                       'map': map_yaml_file,
+        #                       'use_sim_time': use_sim_time,
+        #                       'autostart': autostart,
+        #                       'params_file': params_file,
+        #                       'use_composition': use_composition,
+        #                       'use_respawn': use_respawn,
+        #                       'container_name': 'nav2_container'}.items()
+        # ),
         #use emcl
         # IncludeLaunchDescription(
         #     PythonLaunchDescriptionSource(os.path.join(emcl2_launch_dir,
@@ -154,6 +163,15 @@ def generate_launch_description():
         #     #                   'use_sim_time': use_sim_time,
         #     #                   'params_file': emcl2_params_file}
         # ),
+        # use pcl_localization
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pcl_launch_dir,
+                                                       'pcl_localization.launch.py')),
+            condition=IfCondition(PythonExpression(['not ', slam]))
+            # launch_arguments={'map': map_yaml_file,
+            #                   'use_sim_time': use_sim_time,
+            #                   'params_file': emcl2_params_file}
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(launch_dir, 'navigation_launch.py')),
             launch_arguments={'namespace': namespace,

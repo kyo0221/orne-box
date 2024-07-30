@@ -20,7 +20,7 @@ def generate_launch_description():
         default=os.path.join(
             config_dir,
             'maps',
-            'cit_3f_map.yaml'))
+            '3F_map.pcd'))
 
     param_file_name = 'nav2_params.yaml'
     bt_file_name ='navigate_w_replanning_and_wait.xml'
@@ -40,7 +40,7 @@ def generate_launch_description():
     rviz_config_dir = os.path.join(
         config_dir,
         'rviz',
-        'nav2_default_view2.rviz')
+        'nav2_default_view3d.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
