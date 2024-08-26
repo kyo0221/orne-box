@@ -32,6 +32,7 @@ def generate_launch_description():
     use_namespace = LaunchConfiguration('use_namespace')
     slam = LaunchConfiguration('slam')
     map_yaml_file = LaunchConfiguration('map')
+    map_pcd_file = LaunchConfiguration('map')
     use_sim_time = LaunchConfiguration('use_sim_time')
     params_file = LaunchConfiguration('params_file')
     
@@ -74,7 +75,7 @@ def generate_launch_description():
         default_value='False',
         description='Whether run a SLAM')
 
-    declare_map_yaml_cmd = DeclareLaunchArgument(
+    declare_map_pcd_cmd = DeclareLaunchArgument(
         'map',
         description='Full path to map yaml file to load')
 
@@ -88,12 +89,12 @@ def generate_launch_description():
         default_value=os.path.join(config_dir, 'params', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
-    declare_params_file_cmd = DeclareLaunchArgument(
+    declare_emcl2_params_file_cmd = DeclareLaunchArgument(
         'emcl2_params_file',
         default_value=os.path.join(config_dir, 'params', 'emcl2_params.yaml'),
         description='Full path to the EMCL2 parameters file to use for all launched nodes')
 
-    declare_params_file_cmd = DeclareLaunchArgument(
+    declare_pcl_params_file_cmd = DeclareLaunchArgument(
         'pcl_params_file',
         default_value=os.path.join(config_dir, 'param', 'localization.yaml'),
         description='Full path to the pcl localization parameters file to use for all launched nodes')
@@ -140,37 +141,15 @@ def generate_launch_description():
                               'use_sim_time': use_sim_time,
                               'autostart': autostart,
                               'params_file': params_file}.items()),
-        #use amcl
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource(os.path.join(launch_dir,
-        #                                                'localization_launch.py')),
-        #     condition=IfCondition(PythonExpression(['not ', slam])),
-        #     launch_arguments={'namespace': namespace,
-        #                       'map': map_yaml_file,
-        #                       'use_sim_time': use_sim_time,
-        #                       'autostart': autostart,
-        #                       'params_file': params_file,
-        #                       'use_composition': use_composition,
-        #                       'use_respawn': use_respawn,
-        #                       'container_name': 'nav2_container'}.items()
-        # ),
-        #use emcl
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource(os.path.join(emcl2_launch_dir,
-        #                                                'emcl2.launch.py')),
-        #     condition=IfCondition(PythonExpression(['not ', slam]))
-        #     # launch_arguments={'map': map_yaml_file,
-        #     #                   'use_sim_time': use_sim_time,
-        #     #                   'params_file': emcl2_params_file}
-        # ),
+
         # use pcl_localization
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pcl_launch_dir,
                                                        'pcl_localization.launch.py')),
-            condition=IfCondition(PythonExpression(['not ', slam]))
+            condition=IfCondition(PythonExpression(['not ', slam])),
             # launch_arguments={'map': map_yaml_file,
             #                   'use_sim_time': use_sim_time,
-            #                   'params_file': emcl2_params_file}
+            #                   'params_file': pcl_params_file}
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(launch_dir, 'navigation_launch.py')),
@@ -198,9 +177,11 @@ def generate_launch_description():
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_slam_cmd)
-    ld.add_action(declare_map_yaml_cmd)
+    ld.add_action(declare_map_pcd_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_params_file_cmd)
+    ld.add_action(declare_emcl2_params_file_cmd)
+    ld.add_action(declare_pcl_params_file_cmd)
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
