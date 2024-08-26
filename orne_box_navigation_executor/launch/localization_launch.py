@@ -27,7 +27,7 @@ def generate_launch_description():
     container_name_full = (namespace, '/', container_name)
     use_respawn = LaunchConfiguration('use_respawn')
 
-    lifecycle_nodes = ['map_server', 'amcl']
+    lifecycle_nodes = ['map_server']
 
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
@@ -91,13 +91,13 @@ def generate_launch_description():
                     parameters=[configured_params],
                     remappings=remappings),
 
-                Node(
-                    package='nav2_amcl',
-                    executable='amcl',
-                    name='amcl',
-                    output='screen',
-                    parameters=[configured_params],
-                    remappings=remappings),
+                # Node(
+                #     package='nav2_amcl',
+                #     executable='amcl',
+                #     name='amcl',
+                #     output='screen',
+                #     parameters=[configured_params],
+                #     remappings=remappings),
 
                 Node(
                     package='nav2_lifecycle_manager',
@@ -120,20 +120,20 @@ def generate_launch_description():
                     name='map_server',
                     parameters=[configured_params],
                     remappings=remappings),
-                # ComposableNode(
-                #     package='nav2_map_server',
-                #     executable='costmap_filter_info_server',
-                #     name='costmap_filter_info_server',
-                #     namespace=namespace,
-                #     output='screen',
-                #     emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-                #     parameters=[configured_params]),
                 ComposableNode(
-                    package='nav2_amcl',
-                    plugin='nav2_amcl::AmclNode',
-                    name='amcl',
-                    parameters=[configured_params],
-                    remappings=remappings),
+                    package='nav2_map_server',
+                    executable='costmap_filter_info_server',
+                    name='costmap_filter_info_server',
+                    namespace=namespace,
+                    output='screen',
+                    emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+                    parameters=[configured_params]),
+                # ComposableNode(
+                #     package='nav2_amcl',
+                #     plugin='nav2_amcl::AmclNode',
+                #     name='amcl',
+                #     parameters=[configured_params],
+                #     remappings=remappings),
                 ComposableNode(
                     package='nav2_lifecycle_manager',
                     plugin='nav2_lifecycle_manager::LifecycleManager',
