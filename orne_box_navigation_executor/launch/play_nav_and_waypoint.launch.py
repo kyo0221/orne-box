@@ -14,9 +14,7 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     icart_mini_driver_dir = get_package_share_directory('orne_box_navigation_executor')
-
     launch_file_dir = os.path.join(get_package_share_directory('orne_box_navigation_executor'), 'launch')
-
     run_file_dir = get_package_share_directory('waypoint_manager2')
 
     config_dir = os.path.join(icart_mini_driver_dir, 'config')
@@ -26,7 +24,7 @@ def generate_launch_description():
         default=os.path.join(
             config_dir,
             'maps',
-            'cit_3f_map.yaml'))
+            '3F_map.pcd'))
             
     ### add navigation2 ###
     
@@ -42,7 +40,7 @@ def generate_launch_description():
     rviz_config_dir = os.path.join(
         config_dir,
         'rviz',
-        'nav2_default_view2.rviz')
+        '3d_localization.rviz')
     
     ### end navigation2 ###
 
