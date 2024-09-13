@@ -93,12 +93,11 @@ def generate_launch_description():
                         {'node_names': lifecycle_nodes}])
 
     start_map_server_cmd = Node(
-            package='nav2_map_server',
-            executable='map_server',
-            name='filter_mask_server',
+            package='pcl_ros',
+            executable='pcd_to_pointcloud',
+            name='pcd_to_pointcloud',
             namespace=namespace,
             output='screen',
-            emulate_tty=True,  # https://github.com/ros2/launch/issues/188
             parameters=[configured_params])
 
     start_costmap_filter_info_server_cmd = Node(
