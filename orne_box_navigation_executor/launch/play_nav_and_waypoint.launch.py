@@ -26,7 +26,7 @@ def generate_launch_description():
         default=os.path.join(
             config_dir,
             'maps',
-            'tsukuba.yaml'))
+            'cit_3f_map.yaml'))
 
  
             
@@ -55,7 +55,14 @@ def generate_launch_description():
         default=os.path.join(
             config_dir,
             'maps',
-            'tsukuba_keepout.yaml'))
+            'cit_3f_map_keepout.yaml'))
+    
+    speed_mask_yaml_file = LaunchConfiguration(
+        'mask',
+        default=os.path.join(
+            config_dir,
+            'maps',
+            'cit_3f_map_speed_mask.yaml'))
 
             
 
@@ -85,14 +92,14 @@ def generate_launch_description():
                 #name='waypoint_manager2'
             ),
 
-        # add costmap
-        IncludeLaunchDescription(
-           PythonLaunchDescriptionSource(
-               [launch_file_dir, '/costmap_filter_info.launch.py'])
-        ),
-        launch.actions.LogInfo(
-           msg="Launch costmap filter node."
-        ),
+        # # add costmap
+        # IncludeLaunchDescription(
+        #    PythonLaunchDescriptionSource(
+        #        [launch_file_dir, '/costmap_filter_info.launch.py'])
+        # ),
+        # launch.actions.LogInfo(
+        #    msg="Launch costmap filter node."
+        # ),
 
 
         ### costmap_filter_info ###
@@ -134,33 +141,33 @@ def generate_launch_description():
                         {'autostart': autostart},
                         {'node_names': lifecycle_nodes}]),
 
-        # Node(
-        #     package='nav2_map_server',
-        #     executable='map_server',
-        #     name='filter_mask_server',
-        #     namespace=namespace,
-        #     output='screen',
-        #     emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-        #     parameters=[RewrittenYaml(
-        #                 source_file=params_file,
-        #                 root_key=namespace,
-        #                 param_rewrites={'use_sim_time': use_sim_time,
-        #                                 'yaml_filename': mask_yaml_file},
-        #                 convert_types=True)]),
+        Node(
+            package='nav2_map_server',
+            executable='map_server',
+            name='filter_mask_server',
+            namespace=namespace,
+            output='screen',
+            emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+            parameters=[RewrittenYaml(
+                        source_file=params_file,
+                        root_key=namespace,
+                        param_rewrites={'use_sim_time': use_sim_time,
+                                        'yaml_filename': speed_mask_yaml_file},
+                        convert_types=True)]),
 
-        # Node(
-        #     package='nav2_map_server',
-        #     executable='costmap_filter_info_server',
-        #     name='costmap_filter_info_server',
-        #     namespace=namespace,
-        #     output='screen',
-        #     emulate_tty=True,  # https://github.com/ros2/launch/issues/188
-        #     parameters=[RewrittenYaml(
-        #                 source_file=params_file,
-        #                 root_key=namespace,
-        #                 param_rewrites={'use_sim_time': use_sim_time,
-        #                                 'yaml_filename': mask_yaml_file},
-        #                 convert_types=True)]),
+        Node(
+            package='nav2_map_server',
+            executable='costmap_filter_info_server',
+            name='costmap_filter_info_server',
+            namespace=namespace,
+            output='screen',
+            emulate_tty=True,  # https://github.com/ros2/launch/issues/188
+            parameters=[RewrittenYaml(
+                        source_file=params_file,
+                        root_key=namespace,
+                        param_rewrites={'use_sim_time': use_sim_time,
+                                        'yaml_filename': mask_yaml_file},
+                        convert_types=True)]),
 
         ### end costmap_filter_info ###
 
